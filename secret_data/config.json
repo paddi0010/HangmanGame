@@ -1,9 +1,9 @@
 {
-  "channels": [ "JOINED_CHANNELS" ],
+  "channels": [ "paddi001" ],
 
   "identify": {
-    "username": "YOUR_BOT_ACCOUNT_NAME",
-    "password": "YOUR_OAUTH_TOKEN"
+    "username": "searchy_word_bot",
+    "password": "oauth:pjc5q0bpbgvd28230vfn6t9ka0tr0o"
 
   }
 }
