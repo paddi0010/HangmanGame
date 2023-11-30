@@ -22,7 +22,7 @@ You can extract the zip archive wherever you like, preferably on your desktop. A
 - password - This is the oauth token of your bot, you can generate it on https://twitchapps.com/tmi/ make sure you are logged in with your **bot Account**
 
 
-Then you can double-click on the "start_bot.bat"
+Then you can double-click on the `start_bot.bat`
 
 Now the Twitch Game should be started!
 
