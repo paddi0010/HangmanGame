@@ -122,7 +122,7 @@ function guessLetter(channel, tags, message) {
   }
 };
 
-function wordCommand(channel, message, tags) {
+function wordCommand(channel, tags) {
   const message = `BabyYodaSip ---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. Loading --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, obst, tiere, stadt) - Kategorie ändern | ${tags.username} |`;
     client.say(channel, message);
 }
