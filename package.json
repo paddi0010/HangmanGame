@@ -1,0 +1,17 @@
+{
+  "name": "hangman_game",
+  "version": "1.0.0",
+  "main": "game.js",
+  "scripts": {
+    "start": "node game.js"
+  },
+  "author": "paddi001",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^25.3.2",
+    "express": "^4.18.2",
+    "tmi.js": "^1.8.5",
+    "websocket": "^1.0.34"
+  },
+  "description": ""
+}
