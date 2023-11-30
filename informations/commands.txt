@@ -1,0 +1,14 @@
+Commands f�r W�rter raten:
+
+1. !start word = Spiel starten
+2. !stop word= Spiel stoppen
+3. !guess (Buchstabe) =  Bustabe raten
+4. !modus =  alle Modis auflisten
+5. !modus (normal, begrenzt (zeit in Sekunden), schwierig) = Spielmodi �ndern
+6. !kategorie = kategorie anzeigen
+7. !kategorie (standard, technik, tiere, stadt, obst) = kategorie ändern
+
+
+wordCommand.js
+
+1. !hilfe wortspiel = Alle commands
