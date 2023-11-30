@@ -28,7 +28,7 @@ Now the Twitch Game should be started!
 
 *If you become the message `Login authentication failed`, check your login infomation in the /secret_data/config.json file*
 
-**If you want to stop the Bot, you can easy close the Command Window ;)**
+**For stop the Bot, you can easy close the Command Window ;)**
 
 --> *I am a beginner in JavaScript, so there may be errors.
 If you find a bug or encounter any other issues, feel free to open a issue, and I'll do my best to fix the bug or help you.* :)
