@@ -2,10 +2,8 @@
 
 This is a basic chat game names "hangman_game" and using JavaScript library tmi.js and node.js. You can get tmi.js with 
 
-```sh
-npm install tmi.js
-```
-and node.js here: https://nodejs.org/en
+
+First, you must install NodeJs, you can find it here: https://nodejs.org/en and click the Button "20.11.0 LTS"
 
 The answers of the Bot are in German language!
 
