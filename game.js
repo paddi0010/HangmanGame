@@ -69,7 +69,7 @@ function startWordGame(channel, tags) {
     return;
   }
 
-  if (startWordCooldown && Date.now() - startWordCooldown < 60000) { //<--- 60000 milliseconds = 1 minute, change this vor konfigure the Cooldown.
+  if (startWordCooldown && Date.now() - startWordCooldown < 60000) { //<--- 60000 milliseconds = 1 minute, change this vor configure the Cooldown.
     const remainingCooldown = Math.ceil((60000 - (Date.now() - startWordCooldown)) / 60000); 
     client.say(channel, 'Der `!start word`-Befehl ist im Cooldown. Bitte warte noch ' + remainingCooldown + ' Minute(n).');
     return;
