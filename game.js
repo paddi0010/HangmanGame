@@ -1,6 +1,5 @@
 const tmi = require('tmi.js');
 const config = require('./secret_data/config.json');
-var channel = "paddi001"
 
 const client = new tmi.Client({ 
     options: {
@@ -14,26 +13,28 @@ const client = new tmi.Client({
     channels: config.channels
 });
 
-// Array with Words for the game
+// Array with Words for the game, if you will more, add the Words here // Liste mit Wörtern und den dazugehörigen Kategorien, auf Wunsch, hier welche einfügen//
 const categories = {
-  standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'ich', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo'],
-  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor'],
+  standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'ich', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo', 'streamen', 'twitch', 'streamer', 'name'],
+  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher'],
   obst: ['apfel', 'birne', 'banane', 'kirsche', 'traube', 'melone'],
   tiere: ['hund', 'katze', 'elefant', 'affe', 'giraffe', 'pferd', 'hamster', 'wolf', 'schlange', 'skorpion'],
   stadt: ['berlin', 'hamburg', 'muenchen', 'koeln', 'frankfurt', 'dresden']
 };
 
-let selectedCategory = 'standard';
+let selectedCategory = 'standard'; // EN --> Default: standart, you can change this to technik, obst, tiere or stadt / DE --> Standart: standart, du kannst diese zu technik, obst tiere oder stadt ändern// 
 let randomWord;
 let guessedLetters;
 let gameRunning = false; 
 let gameTimer; 
-let gameDuration = 240000; // Default: 4 Minutes (in Milliseconds)
+let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE --> Standart: 4 Minuten Spiellänge (in Millisekunden)/
 let startWordCooldown = null;
+
+const channel = config.channels[0];
 
 client.on("connected", (address, port) => {
   console.log('Connected', "Adresse: " + address + " Port: " + port);
-  client.say(channel, `Search Word Module gestartet! 🔎 Tippe "!start word" in den Chat um das Spiel zu starten!`);
+  client.say(channel, `Search Word Module gestartet! 🔎 Tippe "!start word" in den Chat um das Spiel zu starten!`); // EN --> Message, when the Bot started / DE --> Nachricht, wenn der Bot gestartet ist. /
 });
 
 
@@ -54,11 +55,15 @@ client.on('message', (channel, tags, message, self) => {
   } else if (message.toLowerCase().startsWith('!kategorie ')) {
     changeCategory(channel, tags, message);
   } else if (message.toLowerCase() === '!word') {
-    wordCommand(client, channel, tags);
-  } 
+    wordCommand(channel, tags);
+  } else if (message.toLowerCase() === '!tipp') {
+    provideTip(channel, tags, client);
+  }
 });
 
+// EN --> You can change this message whoever you like/ DE --> Du kannst diese Nachricht verändern, wie du möchtest//
 function startWordGame(channel, tags) {
+  tipCount = 3
   if (gameRunning) {
     client.say(channel, 'Ein Spiel läuft bereits. Bitte beendet das aktuelle Spiel, bevor ihr ein neues startet. dinkDonk');
     return;
@@ -75,7 +80,7 @@ function startWordGame(channel, tags) {
   guessedLetters = new Set();
   const gameDurationMinutes = gameDuration / 60000;
 
-  client.say(channel, `Das Spiel wurde gestartet. Das zu erratende Wort hat ${randomWord.length} Buchstaben. [${gameDurationMinutes} Minuten Zeit!] (!guess [buchstabe])`);
+  client.say(channel, `Das Spiel wurde gestartet. Das zu erratende Wort hat ${randomWord.length} Buchstaben. [${gameDurationMinutes} Minuten Zeit!] (!guess [buchstabe] ö=oe, ä=ae, ü=ue)`);
   gameRunning = true; // Set game status to “running”.
 
   // Timer für das Spiel starten
@@ -137,6 +142,7 @@ function showCurrentCategory(channel, tags) {
   }
 };
 
+//change Category function
 function changeCategory(channel, tags, message) {
   if (gameRunning) {
     client.say(channel, `Du kannst die Kategorie nicht ändern, während ein Spiel läuft. Gebe dazu "!stop word" in den Chat ein! | ${tags.username} |`);
@@ -184,5 +190,23 @@ function isWordGuessed() {
 function getWordList() {
   return categories[selectedCategory];
 };
+
+function provideTip(channel, tags, client) {
+  if (!gameRunning) {
+    client.say(channel, `Es läuft kein Spiel. ⛔ Bitte startet dies mit dem Befehl "!start word". || ${tags.username} ||`);
+    return;
+  }
+
+  if (tipCount > 0) {
+    const unrevealedLetters = Array.from(new Set(randomWord.split('').filter(letter => !guessedLetters.has(letter))));
+    const randomUnrevealedLetter = unrevealedLetters[Math.floor(Math.random() * unrevealedLetters.length)];
+    client.say(channel, `Tipp: Ein Buchstabe im Wort ist "${randomUnrevealedLetter}" || ${tags.username} ||`);
+    tipCount--;
+
+    client.say(channel, `Verbleibende Tipps: ${tipCount} ⚠️`);
+  } else {
+    client.say(channel, `Ihr habt keine verbleibenden Tipps. ⛔`);
+  }
+}
 
 client.connect().catch(console.error);
