@@ -13,11 +13,13 @@ The answers of the Bot are in German language!
 
 You can extract the zip archive wherever you like, preferably on your desktop. After you have unpacked this, you can start by entering the following values into the variables, you can do it in the /secret_data/config.json File. 
 
+Doubleclick on the config.json File and you can see 3 Varibales:
+
 - channels - This is the Channel you wish to connect the Bot.
 
 - username - This is the username of your bot account
 
-- password - This is the oauth token of your bot, you can generate it on https://twitchapps.com/tmi/ make sure you are logged in with your **bot Account**
+- password - This is the oauth token of your bot, you can generate it on https://twitchapps.com/tmi/ make sure you are logged in with your **bot Account**, otherwise your Main Twitch Account will be used!
 
 
 Then you can double-click on the `start_bot.bat`
