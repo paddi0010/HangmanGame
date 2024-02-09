@@ -13,7 +13,7 @@ The answers of the Bot are in German language!
 
 You can extract the zip archive wherever you like, preferably on your desktop. After you have unpacked this, you can start by entering the following values into the variables, you can do it in the /secret_data/config.json File. 
 
-Doubleclick on the config.json File and you can see 3 Varibales:
+Doubleclick on the config.json File and you can see 3 Variables:
 
 - channels - This is the Channel you wish to connect the Bot.
 
