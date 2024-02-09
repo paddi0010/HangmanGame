@@ -15,7 +15,7 @@ const client = new tmi.Client({
 
 // Array with Words for the game, if you will more, add the Words here // Liste mit Wörtern und den dazugehörigen Kategorien, auf Wunsch, hier welche einfügen//
 const categories = {
-  standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'ich', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo', 'streamen', 'twitch', 'streamer', 'name'],
+  standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo', 'streamen', 'twitch', 'streamer', 'ich', 'name', 'bann', 'timeout'],
   technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher'],
   obst: ['apfel', 'birne', 'banane', 'kirsche', 'traube', 'melone'],
   tiere: ['hund', 'katze', 'elefant', 'affe', 'giraffe', 'pferd', 'hamster', 'wolf', 'schlange', 'skorpion'],
@@ -69,13 +69,13 @@ function startWordGame(channel, tags) {
     return;
   }
 
-  if (startWordCooldown && Date.now() - startWordCooldown < 600000) { // Cooldown: 10 Minutes (10 * 60 * 1000 Milliseconds)
-    const remainingCooldown = Math.ceil((600000 - (Date.now() - startWordCooldown)) / 60000); // Calculation of remaining minutes
-    client.say(channel, 'Der `!start word`-Befehl ist im Cooldown. Bitte warte noch ' + remainingCooldown + ' Minuten.');
+  if (startWordCooldown && Date.now() - startWordCooldown < 60000) { //<--- 60000 milliseconds = 1 minute, change this vor konfigure the Cooldown.
+    const remainingCooldown = Math.ceil((60000 - (Date.now() - startWordCooldown)) / 60000); 
+    client.say(channel, 'Der `!start word`-Befehl ist im Cooldown. Bitte warte noch ' + remainingCooldown + ' Minute(n).');
     return;
   }
 
-  startWordCooldown = Date.now(); // Set Colldown Timestamp
+  startWordCooldown = Date.now(); // Set Cooldown Timestamp
   randomWord = getWordList()[Math.floor(Math.random() * getWordList().length)];
   guessedLetters = new Set();
   const gameDurationMinutes = gameDuration / 60000;
@@ -89,6 +89,7 @@ function startWordGame(channel, tags) {
     gameRunning = false; // Set game status to "finished".
   }, gameDuration);
 }
+
 
 
 function stopWordGame(channel, tags) {
@@ -110,6 +111,16 @@ function guessLetter(channel, tags, message) {
 
   const guess = message.toLowerCase().substring(7);
 
+  if (guess.length > 1) {
+    if (guess === randomWord) {
+      clearTimeout(gameTimer);
+      client.say(channel, 'Glückwunsch! Ihr habt das Wort "' + randomWord + '" erraten. ✅');
+      gameRunning = false;
+    } else {
+      client.say(channel, 'Das geratene Wort ist nicht korrekt. ')
+    }
+  } else {
+
   if (guessedLetters.has(guess)) {
     client.say(channel, 'Diesen Buchstaben habt ihr bereits geraten.');
   } else {
@@ -125,6 +136,7 @@ function guessLetter(channel, tags, message) {
       client.say(channel, 'Der Buchstabe "' + guess + '" ist nicht im Wort enthalten.');
     }
   }
+}
 };
 
 function wordCommand(channel, tags) {
