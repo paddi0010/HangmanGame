@@ -16,11 +16,20 @@ const client = new tmi.Client({
 
 // Array with Words for the game, if you will more, add the Words here // Liste mit Wörtern und den dazugehörigen Kategorien, auf Wunsch, hier welche einfügen//
 const categories = {
-  standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo', 'streamen', 'twitch', 'streamer', 'ich', 'name', 'bann', 'timeout'],
-  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher', 'smartwatch', 'uhr', 'atomkraftwerk'],
-  obst: ['apfel', 'birne', 'banane', 'kirsche', 'traube', 'melone'],
-  tiere: ['hund', 'katze', 'elefant', 'affe', 'giraffe', 'pferd', 'hamster', 'wolf', 'schlange', 'skorpion'],
-  stadt: ['berlin', 'hamburg', 'muenchen', 'koeln', 'frankfurt', 'dresden']
+  standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'luft', 'uhrzeit', 'moin', 'servus', 'streamen', 'twitch', 'streamer', 'name', 'bann', 'timeout', 'killer', 
+  'survivor', 'krankenwagen', 'mediziner', 'ironie', 'zuschauer', 'hangman', 'discord', 'konversation', 'bild', 'unterhaltung', 'kommunikation', 'gameplay', 'folgen',
+  'durchsuchen', 'testen', 'grafik', 'generator', 'strom', 'gameplay', 'kaktus', 'steine', 'treppenstufe', 'herunterfahren', 'beenden', 'offline', 'online', 'schreiben', 'verstecken',
+  'fliehen', 'befehl', 'nachricht', 'benachrichtigungen', 'folie', 'aluminium', 'basteln', 'werbung'],
+
+  technik: ['internet', 'zeit', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher', 'smartwatch', 'atomkraftwerk', 'computer', 
+  'hardware', 'laser', 'taschenlampe'],
+
+  essen: ['apfel', 'birne', 'banane', 'kirsche', 'traube', 'melone', 'pizza', 'karotte', 'weintraube', 'traube', 'schokolade', 'thunfisch', 'fisch', 'seelachs', 'chips', 'zitrone', 
+  'limette', 'kekse', 'croissant'],
+
+  tiere: ['hund', 'katze', 'elefant', 'affe', 'giraffe', 'pferd', 'hamster', 'wolf', 'schlange', 'skorpion', 'känguru', 'fuchs', 'elefant', 'leopard', 'löwe', 'wurm'],
+
+  stadt: ['Berlin', 'hamburg', 'münchen', 'Köln', 'frankfurt', 'dresden', 'kiel']
 };
 
 let selectedCategory = 'standard'; // EN --> Default: standart, you can change this to technik, obst, tiere or stadt / DE --> Standart: standart, du kannst diese zu technik, obst tiere oder stadt ändern// 
@@ -194,7 +203,7 @@ function guessLetter(channel, tags, message) {
 };
 
 function wordCommand(channel, tags) {
-  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, obst, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten | ${tags.username} |`;
+  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, essen, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten | ${tags.username} |`;
     client.say(channel, message);
 }
 
@@ -242,19 +251,22 @@ function displayWord(channel) {
   client.say(channel, displayedWord);
 };
 
+
+
 // Function to check if the entire word has been guessed
 function isWordGuessed() {
-  for (let i = 0; i < randomWord.length; i++) {
-    if (!guessedLetters.has(randomWord[i])) {
+  const lowerCaseRandomWord = randomWord.toLowerCase();
+  for (let i = 0; i < lowerCaseRandomWord.length; i++) {
+    if (!guessedLetters.has(lowerCaseRandomWord[i])) {
       return false;
     }
   }
-
   return true;
 };
 
 function getWordList() {
-  return categories[selectedCategory];
+  const categoryWords = categories[selectedCategory];
+  return categoryWords.map(word => word.toLowerCase()); // Alle Wörter in Kleinbuchstaben umwandeln
 };
 
 function provideTip(channel, tags, client) {
