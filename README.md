@@ -30,18 +30,11 @@ Now the Twitch Game should be started!
 
 **For stop the Bot, you can easy close the Command Window ;)**
 
+For more Information check out the [Wiki]([wiki/Page-Name](https://github.com/paddi0010/HangmanGame_TwitchChat/wiki/How-to-start))
 
 # How to edit Bot Messages
 
 You can open the `game.js` File and you can see a lot of Code. If you want to change the Message, you can change it, i do comments in EN und DE. Do NOT change the Commands otherwise the Bot Commands are buggy.
-
-
- For more Information check out the [Wiki]([wiki/Page-Name](https://github.com/paddi0010/HangmanGame_TwitchChat/wiki/How-to-start))
-
-
-
-
-
 
 --> *I am a beginner in JavaScript, so there may be errors.
 If you find a bug or encounter any other issues, feel free to open a issue, and I'll do my best to fix the bug or help you.* :)
