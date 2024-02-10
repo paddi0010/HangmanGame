@@ -1,5 +1,6 @@
 const tmi = require('tmi.js');
 const config = require('./secret_data/config.json');
+const fs = require('fs');
 
 const client = new tmi.Client({ 
     options: {
@@ -16,7 +17,7 @@ const client = new tmi.Client({
 // Array with Words for the game, if you will more, add the Words here // Liste mit Wörtern und den dazugehörigen Kategorien, auf Wunsch, hier welche einfügen//
 const categories = {
   standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo', 'streamen', 'twitch', 'streamer', 'ich', 'name', 'bann', 'timeout'],
-  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher'],
+  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher', 'smartwatch', 'uhr', 'atomkraftwerk', ''],
   obst: ['apfel', 'birne', 'banane', 'kirsche', 'traube', 'melone'],
   tiere: ['hund', 'katze', 'elefant', 'affe', 'giraffe', 'pferd', 'hamster', 'wolf', 'schlange', 'skorpion'],
   stadt: ['berlin', 'hamburg', 'muenchen', 'koeln', 'frankfurt', 'dresden']
@@ -27,8 +28,9 @@ let randomWord;
 let guessedLetters;
 let gameRunning = false; 
 let gameTimer; 
-let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE --> Standart: 4 Minuten Spiellänge (in Millisekunden)/
+let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE --> Standart: 4 Minuten Spiellänge (in Millisekunden)
 let startWordCooldown = null;
+let startWordCooldownDuration = 60000; // EN --> Default 1 Minute (in Milliseconds) / DE: --> Standart: 1 Minute Cooldown (in Milliseckunden)
 
 const channel = config.channels[0];
 
@@ -58,6 +60,10 @@ client.on('message', (channel, tags, message, self) => {
     wordCommand(channel, tags);
   } else if (message.toLowerCase() === '!tipp') {
     provideTip(channel, tags, client);
+  } else if (message.toLowerCase().startsWith('!cooldown ') && (tags.mod || tags.username.toLowerCase() === channel.replace('#', ''))) {
+    setStartWordCooldown(channel, tags, message);
+  } else if (message.toLowerCase() === '!cooldown') {
+    showStartWordCooldown(channel);
   }
 });
 
@@ -69,8 +75,8 @@ function startWordGame(channel, tags) {
     return;
   }
 
-  if (startWordCooldown && Date.now() - startWordCooldown < 60000) { //<--- 60000 milliseconds = 1 minute, change this vor configure the Cooldown.
-    const remainingCooldown = Math.ceil((60000 - (Date.now() - startWordCooldown)) / 60000); 
+  if (startWordCooldown && Date.now() - startWordCooldown < startWordCooldownDuration) { //<--- 60000 milliseconds = 1 minute, change this vor configure the Cooldown.
+    const remainingCooldown = Math.ceil((startWordCooldownDuration - (Date.now() - startWordCooldown)) / 60000); 
     client.say(channel, 'Der `!start word`-Befehl ist im Cooldown. Bitte warte noch ' + remainingCooldown + ' Minute(n).');
     return;
   }
@@ -90,11 +96,10 @@ function startWordGame(channel, tags) {
   }, gameDuration);
 }
 
-
-
 function stopWordGame(channel, tags) {
   if (!gameRunning) {
     client.say(channel, 'Es läuft kein Spiel. ⛔');
+    return;
   }
 
   clearTimeout(gameTimer);
@@ -102,6 +107,42 @@ function stopWordGame(channel, tags) {
 
   gameRunning = false; // Set game status to "finished".
 };
+
+
+function setStartWordCooldown(channel, tags, message) {
+  if (!tags.mod && tags.username.toLowerCase() !== channel.replace('#', '')) {
+    client.say(channel, 'Nur Moderatoren und der Broadcaster können den Cooldown ändern!');
+    return;
+  }
+  const newCooldownDuration = parseInt(message.toLowerCase().substring(10));
+  if (!isNaN(newCooldownDuration) && newCooldownDuration >= 0) {
+    startWordCooldownDuration = newCooldownDuration * 1000;
+    fs.writeFile('./data/cooldown_config.json', JSON.stringify({ startWordCooldownDuration }), err => {
+      if (err) {
+        console.error('Error saving cooldown configuration:', err);
+        return;
+
+      }
+      client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert.`);
+    });
+  } else {
+    client.say(channel, 'Ungültige Eingabe! Bitte gib eine positive Zahl ein.');
+  }
+}
+
+function showStartWordCooldown(channel) {
+  fs.readFile('./data/cooldown_config.json', (err, data) => {
+    if (err) {
+      console.error('Error reading cooldown configuration:', err);
+      client.say(channel, 'Fehler beim Lesen der Cooldown-Konfiguration.');
+      return;
+    }
+    const { startWordCooldownDuration } = JSON.parse(data);
+    const cooldownSeconds = startWordCooldownDuration / 1000;
+    client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden.`);
+  });
+}
+
 
 function guessLetter(channel, tags, message) {
   if (!gameRunning) {
@@ -140,7 +181,7 @@ function guessLetter(channel, tags, message) {
 };
 
 function wordCommand(channel, tags) {
-  const message = `BabyYodaSip ---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. Loading --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, obst, tiere, stadt) - Kategorie ändern | ${tags.username} |`;
+  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, obst, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten | ${tags.username} |`;
     client.say(channel, message);
 }
 
