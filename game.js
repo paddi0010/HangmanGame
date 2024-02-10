@@ -17,7 +17,7 @@ const client = new tmi.Client({
 // Array with Words for the game, if you will more, add the Words here // Liste mit Wörtern und den dazugehörigen Kategorien, auf Wunsch, hier welche einfügen//
 const categories = {
   standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'luft', 'bot', 'uhrzeit', 'moin', 'servus', 'klo', 'streamen', 'twitch', 'streamer', 'ich', 'name', 'bann', 'timeout'],
-  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher', 'smartwatch', 'uhr', 'atomkraftwerk', ''],
+  technik: ['internet', 'zeit', 'ki', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher', 'smartwatch', 'uhr', 'atomkraftwerk'],
   obst: ['apfel', 'birne', 'banane', 'kirsche', 'traube', 'melone'],
   tiere: ['hund', 'katze', 'elefant', 'affe', 'giraffe', 'pferd', 'hamster', 'wolf', 'schlange', 'skorpion'],
   stadt: ['berlin', 'hamburg', 'muenchen', 'koeln', 'frankfurt', 'dresden']
@@ -108,40 +108,53 @@ function stopWordGame(channel, tags) {
   gameRunning = false; // Set game status to "finished".
 };
 
-
 function setStartWordCooldown(channel, tags, message) {
   if (!tags.mod && tags.username.toLowerCase() !== channel.replace('#', '')) {
     client.say(channel, 'Nur Moderatoren und der Broadcaster können den Cooldown ändern!');
     return;
   }
+  
   const newCooldownDuration = parseInt(message.toLowerCase().substring(10));
+  
   if (!isNaN(newCooldownDuration) && newCooldownDuration >= 0) {
     startWordCooldownDuration = newCooldownDuration * 1000;
-    fs.writeFile('./data/cooldown_config.json', JSON.stringify({ startWordCooldownDuration }), err => {
-      if (err) {
-        console.error('Error saving cooldown configuration:', err);
-        return;
-
-      }
-      client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert.`);
-    });
+    saveCooldownDuration(startWordCooldownDuration);
+    client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert.`);
   } else {
     client.say(channel, 'Ungültige Eingabe! Bitte gib eine positive Zahl ein.');
   }
 }
 
 function showStartWordCooldown(channel) {
-  fs.readFile('./data/cooldown_config.json', (err, data) => {
+  const cooldownSeconds = startWordCooldownDuration / 1000;
+  client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden.`);
+}
+
+// Funktion zum Speichern der Cooldown-Dauer in einer Datei
+function saveCooldownDuration(cooldownDuration) {
+  const data = JSON.stringify({ startWordCooldownDuration: cooldownDuration });
+  fs.writeFile('./data/cooldown_config.json', data, (err) => {
     if (err) {
-      console.error('Error reading cooldown configuration:', err);
-      client.say(channel, 'Fehler beim Lesen der Cooldown-Konfiguration.');
-      return;
+      console.error('Fehler beim Speichern der Cooldown-Konfiguration:', err);
     }
-    const { startWordCooldownDuration } = JSON.parse(data);
-    const cooldownSeconds = startWordCooldownDuration / 1000;
-    client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden.`);
   });
 }
+
+// Funktion zum Laden der Cooldown-Dauer aus einer Datei beim Start des Bots
+function loadCooldownDuration() {
+  fs.readFile('./data/cooldown_config.json', (err, data) => {
+    if (err) {
+      console.error('Fehler beim Lesen der Cooldown-Konfiguration:', err);
+      return;
+    }
+    const parsedData = JSON.parse(data);
+    if (!isNaN(parsedData.startWordCooldownDuration)) {
+      startWordCooldownDuration = parsedData.startWordCooldownDuration;
+    }
+  });
+}
+
+// Beim Start des Bots die Cooldown-Dauer laden
 
 
 function guessLetter(channel, tags, message) {
@@ -263,3 +276,4 @@ function provideTip(channel, tags, client) {
 }
 
 client.connect().catch(console.error);
+loadCooldownDuration();
