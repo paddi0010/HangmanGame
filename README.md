@@ -33,9 +33,9 @@ Now the Twitch Game should be started!
 
 # How to edit Bot Messages
 
-You can open the `game.js` File and you can see a lot of Code. If you want to change the Message, you can change it. Do NOT change the Commands otherwise the Bot Commands are buggy.
+You can open the `game.js` File and you can see a lot of Code. If you want to change the Message, you can change it, i do comments in EN und DE. Do NOT change the Commands otherwise the Bot Commands are buggy.
 
-![Screenshot 2024-02-09 191640](https://github.com/paddi0010/HangmanGame_TwitchChat/assets/105525732/4778b65c-1742-4bab-85db-d679feaa274b)
+
 
 
 
