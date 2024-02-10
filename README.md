@@ -36,6 +36,8 @@ Now the Twitch Game should be started!
 You can open the `game.js` File and you can see a lot of Code. If you want to change the Message, you can change it, i do comments in EN und DE. Do NOT change the Commands otherwise the Bot Commands are buggy.
 
 
+# For more Information check out the Wiki [[Wiki|https://github.com/paddi0010/HangmanGame_TwitchChat/wiki/How-to-start]]
+
 
 
 
