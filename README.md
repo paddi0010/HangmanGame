@@ -30,7 +30,7 @@ Now the Twitch Game should be started!
 
 **For stop the Bot, you can easy close the Command Window ;)**
 
-For more Information check out the [Wiki]([How to start](https://github.com/paddi0010/HangmanGame_TwitchChat/wiki/How-to-start))
+For more Information check out the [Wiki](https://github.com/paddi0010/HangmanGame_TwitchChat/wiki/How-to-start)
 
 # How to edit Bot Messages
 
