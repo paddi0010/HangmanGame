@@ -1,15 +1,17 @@
-Commands f�r W�rter raten:
+Commands f�r Hangman Game raten:
 
 1. !start word = Spiel starten
 2. !stop word= Spiel stoppen
 3. !guess (Buchstabe) =  Bustabe raten
-4. !modus =  alle Modis auflisten
-5. !modus (normal, begrenzt (zeit in Sekunden), schwierig) = Spielmodi �ndern
-6. !kategorie = kategorie anzeigen
-7. !kategorie (standard, technik, tiere, stadt, obst) = kategorie ändern
+4. !kategorien = verfügbare kategorien anzeigen
+5. !kat = aktuell ausgewählte Kategorie anzeigen
+6. !kategorie (standard, technik, tiere, stadt, obst) = kategorie ändern
+7. !word = Alle Commands für Hangman Game
 8. !tipp = Einen Buchstaben aufdecken [NEU!]
 
+------------------------------------------------------------------------------
 
-wordCommand.js
+//ZUM KONFIGURIEREN://
 
-1. !hilfe wortspiel = Alle commands
+1. !cooldown [Sekunden] z.B. !cooldown 60 = 1 minute Cooldown ; !cooldown 0 = Kein Cooldown 
+2. !cooldown = Aktuell eingestellten Cooldown ansehen (Standart: 1 Minute)
