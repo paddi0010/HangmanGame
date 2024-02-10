@@ -95,7 +95,7 @@ function startWordGame(channel, tags) {
   guessedLetters = new Set();
   const gameDurationMinutes = gameDuration / 60000;
 
-  client.say(channel, `Das Spiel wurde gestartet. Das zu erratende Wort hat ${randomWord.length} Buchstaben. [${gameDurationMinutes} Minuten Zeit!] (!guess [buchstabe] ö=oe, ä=ae, ü=ue)`);
+  client.say(channel, `Das Spiel wurde gestartet. Das zu erratende Wort hat ${randomWord.length} Buchstaben. [${gameDurationMinutes} Minuten Zeit!] (!guess [buchstabe])`);
   gameRunning = true; // Set game status to “running”.
 
   // Timer für das Spiel starten
