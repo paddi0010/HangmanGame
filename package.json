@@ -1,6 +1,6 @@
 {
   "name": "hangman_game",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "main": "game.js",
   "scripts": {
     "start": "node game.js"
