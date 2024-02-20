@@ -19,7 +19,7 @@ const categories = {
   standard: ['mann', 'ballon', 'programm', 'fluss', 'hallo', 'luft', 'uhrzeit', 'moin', 'servus', 'streamen', 'twitch', 'streamer', 'name', 'bann', 'timeout', 'killer', 
   'survivor', 'krankenwagen', 'mediziner', 'ironie', 'zuschauer', 'hangman', 'discord', 'konversation', 'bild', 'unterhaltung', 'kommunikation', 'gameplay', 'folgen',
   'durchsuchen', 'testen', 'grafik', 'generator', 'strom', 'gameplay', 'kaktus', 'steine', 'treppenstufe', 'herunterfahren', 'beenden', 'offline', 'online', 'schreiben', 'verstecken',
-  'fliehen', 'befehl', 'nachricht', 'benachrichtigungen', 'folie', 'aluminium', 'basteln', 'werbung'],
+  'fliehen', 'befehl', 'nachricht', 'benachrichtigungen', 'folie', 'aluminium', 'basteln', 'werbung', 'palette'],
 
   technik: ['internet', 'zeit', 'tastatur', 'maus', 'server', 'programmierung', 'bildschirm', 'monitor', 'lautsprecher', 'smartwatch', 'atomkraftwerk', 'computer', 
   'hardware', 'laser', 'taschenlampe'],
