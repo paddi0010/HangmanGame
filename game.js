@@ -80,7 +80,7 @@ client.on('message', (channel, tags, message, self) => {
 function startWordGame(channel, tags) {
   tipCount = 3
   if (gameRunning) {
-    client.say(channel, 'Ein Spiel läuft bereits. Bitte beendet das aktuelle Spiel, bevor ihr ein neues startet. dinkDonk');
+    client.say(channel, 'Ein Spiel läuft bereits. Bitte beendet das aktuelle Spiel, bevor ihr ein neues startet. ⚠️');
     return;
   }
 
