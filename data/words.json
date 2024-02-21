@@ -1,0 +1,16 @@
+{ 
+"standard": [ "mann", "ballon", "programm", "fluss", "hallo", "luft", "uhrzeit", "moin", "servus", "streamen", "twitch", "streamer", "name", "bann", "timeout", "killer", "survivor",
+"krankenwagen", "mediziner", "ironie", "zuschauer", "hangman", "discord", "konversation", "bild", "unterhaltung", "kommunikation", "gameplay", "folgen", "durchsuchen", "testen", "grafik",
+"generator", "strom", "gameplay", "kaktus", "steine", "treppenstufe", "herunterfahren", "beenden", "offline", "online", "schreiben", "verstecken", "fliehen", "befehl", "nachricht", 
+"benachrichtigungen", "folie", "aluminium", "basteln", "werbung", "lagerfeuer", "gebäude", "steckdose"],
+
+"technik": [ "internet", "zeit", "tastatur", "maus", "server", "programmierung", "bildschirm", "monitor", "lautsprecher", "smartwatch", "atomkraftwerk", "computer", "hardware", "laser",
+"taschenlampe" ],
+
+"essen": [ "apfel", "birne", "banane", "kirsche", "traube", "melone", "pizza", "karotte", "weintraube", "traube", "schokolade", "thunfisch", "fisch", "seelachs", "chips", "zitrone",
+"limette", "kekse", "croissant"],
+
+"tiere": [ "hund", "katze", "elefant", "affe", "giraffe", "pferd", "hamster", "wolf", "schlange", "skorpion", "känguru", "fuchs", "elefant", "leopard", "löwe", "wurm" ],
+
+"stadt": [ "Berlin", "hamburg", "münchen", "Köln", "frankfurt", "dresden", "kiel" ]
+}
