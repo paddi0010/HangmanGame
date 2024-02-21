@@ -1,5 +1,5 @@
 {
-  "channels" : ["JOINDED_CHANNELD"],
+  "channels" : ["JOINDED_CHANNELS"],
 
   "identify": {
   "username": "BOT_USERNAME",
