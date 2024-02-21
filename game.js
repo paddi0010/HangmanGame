@@ -1,6 +1,7 @@
 const tmi = require("tmi.js");
 const config = require("./secret_data/config.json");
 const fs = require("fs");
+const categories = require ("./data/words.json");
 
 const client = new tmi.Client({
   options: {
@@ -13,24 +14,6 @@ const client = new tmi.Client({
   identity: config.identify,
   channels: config.channels,
 });
-
-// Array with Words for the game, if you will more, add the Words here // Liste mit Wörtern und den dazugehörigen Kategorien, auf Wunsch, hier welche einfügen//
-const categories = {
-  standard: [ "mann", "ballon", "programm", "fluss", "hallo", "luft", "uhrzeit", "moin", "servus", "streamen", "twitch", "streamer", "name", "bann", "timeout", "killer", "survivor",
-  "krankenwagen", "mediziner", "ironie", "zuschauer", "hangman", "discord", "konversation", "bild", "unterhaltung", "kommunikation", "gameplay", "folgen", "durchsuchen", "testen", "grafik",
-  "generator", "strom", "gameplay", "kaktus", "steine", "treppenstufe", "herunterfahren", "beenden", "offline", "online", "schreiben", "verstecken", "fliehen", "befehl", "nachricht", 
-  "benachrichtigungen", "folie", "aluminium", "basteln", "werbung", "lagerfeuer", "gebäude", "steckdose"],
-
-  technik: [ "internet", "zeit", "tastatur", "maus", "server", "programmierung", "bildschirm", "monitor", "lautsprecher", "smartwatch", "atomkraftwerk", "computer", "hardware", "laser",
-  "taschenlampe" ],
-
-  essen: [ "apfel", "birne", "banane", "kirsche", "traube", "melone", "pizza", "karotte", "weintraube", "traube", "schokolade", "thunfisch", "fisch", "seelachs", "chips", "zitrone",
-  "limette", "kekse", "croissant"],
-
-  tiere: [ "hund", "katze", "elefant", "affe", "giraffe", "pferd", "hamster", "wolf", "schlange", "skorpion", "känguru", "fuchs", "elefant", "leopard", "löwe", "wurm" ],
-
-  stadt: [ "Berlin", "hamburg", "münchen", "Köln", "frankfurt", "dresden", "kiel" ],
-};
 
 let selectedCategory = "standard"; // EN --> Default: standart, you can change this to technik, obst, tiere or stadt / DE --> Standart: standart, du kannst diese zu technik, obst tiere oder stadt ändern//
 let randomWord;
