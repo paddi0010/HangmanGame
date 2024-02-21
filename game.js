@@ -86,7 +86,7 @@ function startWordGame(channel, tags) {
   if (startWordCooldown && Date.now() - startWordCooldown < startWordCooldownDuration) {//<--- 60000 milliseconds = 1 minute, change this vor configure the Cooldown.
     const remainingCooldown = Math.ceil((startWordCooldownDuration - (Date.now() - startWordCooldown)) / 60000
     );
-    client.say(channel, "Der `!start word`-Befehl ist im Cooldown. Bitte warte noch " + remainingCooldown + " Minute(n).");
+    client.say(channel, "Der `!start word`-Befehl ist im Cooldown. Bitte warte noch " + remainingCooldown + " Minute(n). ⏱️");
     return;
   }
 
@@ -100,7 +100,7 @@ function startWordGame(channel, tags) {
 
   // Timer für das Spiel starten
   gameTimer = setTimeout(() => {
-    client.say(channel, "Die Zeit ist abgelaufen! Das zu erratende Wort war: " + randomWord + 'Wenn ihr noch eine Runde spielen wollt, gebt "!start word" ein.'
+    client.say(channel, "Die Zeit ist abgelaufen! 🕛 Das zu erratende Wort war: " + randomWord + 'Wenn ihr noch eine Runde spielen wollt, gebt "!start word" ein.'
     );
     gameRunning = false; // Set game status to "finished".
   }, gameDuration);
@@ -113,13 +113,13 @@ function stopWordGame(channel, tags) {
   }
 
   clearTimeout(gameTimer);
-  client.say(channel, 'Das Spiel wurde beendet. Wenn ihr noch eine Runde spielen wollt, gebt "!start word" ein.');
+  client.say(channel, 'Das Spiel wurde beendet. ⚠️ Wenn ihr noch eine Runde spielen wollt, gebt "!start word" ein.');
   gameRunning = false; // Set game status to "finished".
 }
 
 function setStartWordCooldown(channel, tags, message) {
   if (!tags.mod && tags.username.toLowerCase() !== channel.replace("#", "")) {
-    client.say(channel, "Nur Moderatoren und der Broadcaster können den Cooldown ändern!");
+    client.say(channel, "Nur Moderatoren und der Broadcaster können den Cooldown ändern! 👤 ⚠️");
     return;
   }
 
@@ -128,15 +128,15 @@ function setStartWordCooldown(channel, tags, message) {
   if (!isNaN(newCooldownDuration) && newCooldownDuration >= 0) {
     startWordCooldownDuration = newCooldownDuration * 1000;
     saveCooldownDuration(startWordCooldownDuration);
-    client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert.`);
+    client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert. ⏱️ ✅`);
   } else {
-    client.say(channel, "Ungültige Eingabe! Bitte gib eine positive Zahl ein.");
+    client.say(channel, "Ungültige Eingabe! Bitte gib eine positive Zahl ein. ⚠️");
   }
 }
 
 function showStartWordCooldown(channel) {
   const cooldownSeconds = startWordCooldownDuration / 1000;
-  client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden.`);
+  client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden. ⏱️`);
 }
 
 // Funktion zum Speichern der Cooldown-Dauer in einer Datei
@@ -179,11 +179,11 @@ function guessLetter(channel, tags, message) {
       client.say(channel, 'Glückwunsch! Ihr habt das Wort "' + randomWord + '" erraten. ✅');
       gameRunning = false;
     } else {
-      client.say(channel, "Das geratene Wort ist nicht korrekt. ");
+      client.say(channel, "Das geratene Wort ist nicht korrekt. ❌");
     }
   } else {
     if (guessedLetters.has(guess)) {
-      client.say(channel, "Diesen Buchstaben habt ihr bereits geraten.");
+      client.say(channel, "Diesen Buchstaben habt ihr bereits geraten. ⚠️");
     } else {
       if (randomWord.includes(guess)) {
         guessedLetters.add(guess);
@@ -194,7 +194,7 @@ function guessLetter(channel, tags, message) {
           gameRunning = false;
         }
       } else {
-        client.say(channel, 'Der Buchstabe "' + guess + '" ist nicht im Wort enthalten.');
+        client.say(channel, 'Der Buchstabe "' + guess + '" ist nicht im Wort enthalten. ❌');
       }
     }
   }
@@ -218,7 +218,7 @@ function showCurrentCategory(channel, tags) {
 //change Category function
 function changeCategory(channel, tags, message) {
   if (gameRunning) {
-    client.say(channel, `Du kannst die Kategorie nicht ändern, während ein Spiel läuft. Gebe dazu "!stop word" in den Chat ein! | ${tags.username} |`);
+    client.say(channel, `Du kannst die Kategorie nicht ändern, während ein Spiel läuft. ⚠️ Gebe dazu "!stop word" in den Chat ein! | ${tags.username} |`);
     return;
   }
 
@@ -279,7 +279,7 @@ function provideTip(channel, tags, client) {
     );
     const randomUnrevealedLetter =
       unrevealedLetters[Math.floor(Math.random() * unrevealedLetters.length)];
-    client.say(channel, `Tipp: Ein Buchstabe im Wort ist "${randomUnrevealedLetter}" || ${tags.username} ||`);
+    client.say(channel, `Tipp: Ein Buchstabe im Wort ist "${randomUnrevealedLetter}" 🔤 || ${tags.username} ||`);
     tipCount--;
 
     client.say(channel, `Verbleibende Tipps: ${tipCount} ⚠️`);
