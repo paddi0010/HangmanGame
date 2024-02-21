@@ -72,6 +72,10 @@ client.on("message", (channel, tags, message, self) => {
     setStartWordCooldown(channel, tags, message);
   } else if (message.toLowerCase() === "!cooldown") {
     showStartWordCooldown(channel);
+  } else if (message.toLowerCase().startsWith("!duration ") && (tags.mod || tags.username.toLowerCase() === channel.replace("#", ""))) {
+      setGameDuration(channel, tags, message);
+  } else if (message.toLowerCase() === "!duration") {
+    showGameDuration(channel);
   }
 });
 
@@ -83,28 +87,26 @@ function startWordGame(channel, tags) {
     return;
   }
 
-  if (startWordCooldown && Date.now() - startWordCooldown < startWordCooldownDuration) {//<--- 60000 milliseconds = 1 minute, change this vor configure the Cooldown.
-    const remainingCooldown = Math.ceil((startWordCooldownDuration - (Date.now() - startWordCooldown)) / 60000
-    );
+  if (startWordCooldown && Date.now() - startWordCooldown < startWordCooldownDuration) {
+    const remainingCooldown = Math.ceil((startWordCooldownDuration - (Date.now() - startWordCooldown)) / 60000);
     client.say(channel, "Der `!start word`-Befehl ist im Cooldown. Bitte warte noch " + remainingCooldown + " Minute(n).");
     return;
   }
 
-  startWordCooldown = Date.now(); // Set Cooldown Timestamp
+  startWordCooldown = Date.now();
   randomWord = getWordList()[Math.floor(Math.random() * getWordList().length)];
   guessedLetters = new Set();
-  const gameDurationMinutes = gameDuration / 60000;
+  const gameDurationSeconds = gameDuration / 1000;
 
-  client.say(channel, `Das Spiel wurde gestartet. Das zu erratende Wort hat ${randomWord.length} Buchstaben. [${gameDurationMinutes} Minuten Zeit!] (!guess [buchstabe])`);
-  gameRunning = true; // Set game status to “running”.
+  client.say(channel, `Das Spiel wurde gestartet. Das zu erratende Wort hat ${randomWord.length} Buchstaben. [${gameDurationSeconds} Sekunden Zeit!] (!guess [Buchstabe])`);
+  gameRunning = true;
 
-  // Timer für das Spiel starten
   gameTimer = setTimeout(() => {
-    client.say(channel, "Die Zeit ist abgelaufen! Das zu erratende Wort war: " + randomWord + 'Wenn ihr noch eine Runde spielen wollt, gebt "!start word" ein.'
-    );
-    gameRunning = false; // Set game status to "finished".
+    client.say(channel, "Die Zeit ist abgelaufen! Das zu erratende Wort war: \"" + randomWord + "\" Wenn ihr noch eine Runde spielen wollt, gebt \"!start word\" ein.");
+    gameRunning = false;
   }, gameDuration);
 }
+
 
 function stopWordGame(channel, tags) {
   if (!gameRunning) {
@@ -119,7 +121,7 @@ function stopWordGame(channel, tags) {
 
 function setStartWordCooldown(channel, tags, message) {
   if (!tags.mod && tags.username.toLowerCase() !== channel.replace("#", "")) {
-    client.say(channel, "Nur Moderatoren und der Broadcaster können den Cooldown ändern!");
+    client.say(channel, "Nur Moderatoren und der Broadcaster können den Cooldown ändern! ⚠️");
     return;
   }
 
@@ -128,15 +130,15 @@ function setStartWordCooldown(channel, tags, message) {
   if (!isNaN(newCooldownDuration) && newCooldownDuration >= 0) {
     startWordCooldownDuration = newCooldownDuration * 1000;
     saveCooldownDuration(startWordCooldownDuration);
-    client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert.`);
+    client.say(channel, `Cooldown für den Spielstart wurde auf ${newCooldownDuration} Sekunden geändert. ✅`);
   } else {
-    client.say(channel, "Ungültige Eingabe! Bitte gib eine positive Zahl ein.");
+    client.say(channel, "Ungültige Eingabe! Bitte gib eine positive Zahl ein. ⚠️");
   }
 }
 
 function showStartWordCooldown(channel) {
   const cooldownSeconds = startWordCooldownDuration / 1000;
-  client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden.`);
+  client.say(channel, `Der Cooldown für den Spielstart beträgt derzeit ${cooldownSeconds} Sekunden. ⏱️`);
 }
 
 // Funktion zum Speichern der Cooldown-Dauer in einer Datei
@@ -288,5 +290,44 @@ function provideTip(channel, tags, client) {
   }
 }
 
+function setGameDuration(channel, tags, message) {
+  const newDuation = parseInt(message.toLowerCase().substring(10));
+
+  if (!isNaN(newDuation) && newDuation > 0) {
+    gameDuration = newDuation * 1000;
+    saveGameDuration(gameDuration);
+    client.say(channel, `Die Spieldauer wurde auf ${newDuation} Sekunden geändert. ✅`);
+  } else {
+    client.say(channel, "Ungültige Eingabe! Bitte gib eine positive Zahl ein.");
+  }
+}
+
+function showGameDuration(channel) {
+  const durationSeconds = gameDuration / 1000;
+  client.say(channel, `Die aktuelle Spieldauer beträgt ${durationSeconds} Sekunden.`);
+}
+
+function saveGameDuration(duration) {
+  const data = JSON.stringify({ gameDuration: duration });
+  fs.writeFile("./data/game_duration_config.json", data, (err) => {
+    if (err) {
+      console.error("Fehler beim Speichern der Spieldauer. ⚠️:", err);
+    }
+  });
+}
+
+function loadGameDuration() {
+  fs.readFile("./data/game_duration_config.json", (err, data) => {
+      if (err) {
+          console.error("Fehler beim Lesen der Spieldauer-Konfiguration:", err);
+          return;
+      }
+      const parsedData = JSON.parse(data);
+      if (!isNaN(parsedData.gameDuration)) {
+          gameDuration = parsedData.gameDuration;
+      }
+  });
+}
 client.connect().catch(console.error);
 loadCooldownDuration();
+loadGameDuration();
