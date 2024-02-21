@@ -60,7 +60,7 @@ client.on("message", (channel, tags, message, self) => {
   } else if (message.toLowerCase().startsWith("!spielzeit ") && (tags.mod || tags.username.toLowerCase() === channel.replace("#", ""))) {
       setGameDuration(channel, tags, message);
   } else if (message.toLowerCase() === "!spielzeit") {
-    showGameDuration(channel);
+    showGameDuration(channel, tags, message);
   }
 });
 
