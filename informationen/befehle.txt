@@ -15,5 +15,5 @@ Commands f r Hangman Game:
 
 1. !cooldown [Sekunden] z.B. !cooldown 60 = 1 minute Cooldown ; !cooldown 0 = Kein Cooldown 
 2. !cooldown = Aktuell eingestellten Cooldown ansehen (Standard: 1 Minute)
-3. !duration [Sekunden] z.B. !duration 60 = 1 Minute Spielzeit
-4. !duration = aktuelle Spielzeit anzeigen
+3. !spielzeit [Sekunden] z.B. !duration 60 = 1 Minute Spielzeit
+4. !spielzeit = aktuelle Spielzeit anzeigen
