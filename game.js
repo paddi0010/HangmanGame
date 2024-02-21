@@ -15,6 +15,8 @@ const client = new tmi.Client({
   channels: config.channels,
 });
 
+//word list is in the /data/words.json file
+
 let selectedCategory = "standard"; // EN --> Default: standart, you can change this to technik, obst, tiere or stadt / DE --> Standart: standart, du kannst diese zu technik, obst tiere oder stadt ändern//
 let randomWord;
 let guessedLetters;
