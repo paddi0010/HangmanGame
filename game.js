@@ -95,7 +95,7 @@ function startWordGame(channel, tags) {
 
 function stopWordGame(channel, tags) {
   if (!gameRunning) {
-    client.say(channel, "Du möchtest wirklich ein nicht gestartetest Spiel stoppen? Kappa");
+    client.say(channel, `Du möchtest wirklich ein nicht gestartetest Spiel stoppen? Kappa || ${tags.username} ||`);
     return;
   }
 
@@ -253,6 +253,7 @@ function getWordList() {
 }
 
 function provideTip(channel, tags, client) {
+
   if (!gameRunning) {
     client.say(channel, `Nanana nicht so voreilig! 😄 Es läuft doch kein Spiel. ⛔ Mit "!start word" kannst du dieses starten. || ${tags.username} ||`);
     return;
