@@ -17,14 +17,14 @@ const client = new tmi.Client({
 
 //word list is in the /data/words.json file
 
-let selectedCategory = "standard"; // EN --> Default: standart, you can change this to technik, obst, tiere or stadt / DE --> Standart: standart, du kannst diese zu technik, obst tiere oder stadt ändern//
+let selectedCategory = "standard"; // EN --> Default: standard, you can change this to technik, obst, tiere or stadt / DE --> Standard: standard, du kannst diese zu technik, obst tiere oder stadt ändern//
 let randomWord;
 let guessedLetters;
 let gameRunning = false;
 let gameTimer;
-let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE --> Standart: 4 Minuten Spiellänge (in Millisekunden)
+let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE --> Standard: 4 Minuten Spiellänge (in Millisekunden)
 let startWordCooldown = null;
-let startWordCooldownDuration = 60000; // EN --> Default 1 Minute (in Milliseconds) / DE: --> Standart: 1 Minute Cooldown (in Milliseckunden)
+let startWordCooldownDuration = 60000; // EN --> Default 1 Minute (in Milliseconds) / DE: --> Standard: 1 Minute Cooldown (in Milliseckunden)
 
 const channel = config.channels[0];
 
@@ -83,7 +83,7 @@ function startWordGame(channel, tags) {
   guessedLetters = new Set();
   const gameDurationSeconds = gameDuration / 1000;
 
-  client.say(channel, `Ein neues Spiel wurde gestartet. ✅ Hab mir mal ein Wort mit ${randomWord.length} Buchstaben rausgesucht. :D Ihr habt ${gameDurationSeconds} Sekunden Zeit! ⏲️ (!guess [Buchstabe])`);
+  client.say(channel, `Ein neues Spiel wurde gestartet. ✅ Hab mir mal ein Wort mit ${randomWord.length} Buchstaben rausgesucht. 😄 Ihr habt ${gameDurationSeconds} Sekunden Zeit! ⏲️ (!guess [Buchstabe])`);
   gameRunning = true;
 
   gameTimer = setTimeout(() => {
