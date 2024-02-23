@@ -22,6 +22,7 @@ let randomWord;
 let guessedLetters;
 let gameRunning = false;
 let gameTimer;
+let tipCount = 3;
 let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE --> Standard: 4 Minuten Spiellänge (in Millisekunden)
 let startWordCooldown = null;
 let startWordCooldownDuration = 60000; // EN --> Default 1 Minute (in Milliseconds) / DE: --> Standard: 1 Minute Cooldown (in Milliseckunden)
@@ -68,13 +69,13 @@ client.on("message", (channel, tags, message, self) => {
 function startWordGame(channel, tags) {
   tipCount = 3;
   if (gameRunning) {
-    client.say(channel, "2 Spiele gleichzeitig? Nee, gibt sonst ein Chaos! Bitte beendet das aktuelle Spiel, bevor ihr ein neues startet. ⚠️");
+    client.say(channel, "2 Spiele gleichzeitig? Kappa Nee, gibt sonst ein Chaos! Bitte beendet das aktuelle Spiel, bevor ihr ein neues startet. ⚠️");
     return;
   }
 
   if (startWordCooldown && Date.now() - startWordCooldown < startWordCooldownDuration) {
     const remainingCooldown = Math.ceil((startWordCooldownDuration - (Date.now() - startWordCooldown)) / 60000);
-    client.say(channel, "Der `!start word`-Befehl kühlt noch ab. 🥶 Bitte wartet noch " + remainingCooldown + " Minute(n).");
+    client.say(channel, "Der `!start word`-Befehl kühlt noch ab. 🥶 Bitte wartet noch " + remainingCooldown + " Minute(n). ⏱️");
     return;
   }
 
@@ -83,11 +84,11 @@ function startWordGame(channel, tags) {
   guessedLetters = new Set();
   const gameDurationSeconds = gameDuration / 1000;
 
-  client.say(channel, `Ein neues Spiel wurde gestartet. ✅ Hab mir mal ein Wort mit ${randomWord.length} Buchstaben rausgesucht. 😄 Ihr habt ${gameDurationSeconds} Sekunden Zeit! ⏲️ (!guess [Buchstabe])`);
+  client.say(channel, `Ein neues Spiel wurde gestartet. ✅ Hab mir mal ein Wort mit ${randomWord.length} Buchstaben rausgesucht. 🔤 Ihr habt ${gameDurationSeconds} Sekunden Zeit! ⌛ (!guess [Buchstabe])`);
   gameRunning = true;
 
   gameTimer = setTimeout(() => {
-    client.say(channel, "Die Zeit ist um! Das Wort war: \"" + randomWord + "\" Beim nächsten Mal klappt es bestimmt besser! \"!start word\" für eine weitere Runde.");
+    client.say(channel, "Die Zeit ist um! ⏱️ Das Wort war: \"" + randomWord + "\" Beim nächsten Mal klappt es bestimmt besser! \"!start word\" für eine weitere Runde.");
     gameRunning = false;
   }, gameDuration);
 }
@@ -106,7 +107,7 @@ function stopWordGame(channel, tags) {
 
 function setStartWordCooldown(channel, tags, message) {
   if (!tags.mod && tags.username.toLowerCase() !== channel.replace("#", "")) {
-    client.say(channel, "Nur Moderatoren und der Broadcaster können den Cooldown ändern! ⚠️");
+    client.say(channel, "Nur Moderatoren und der Broadcaster können den Cooldown ändern! ⛔");
     return;
   }
 
@@ -158,7 +159,7 @@ function loadCooldownDuration() {
 
 function guessLetter(channel, tags, message) {
   if (!gameRunning) {
-    client.say(channel, 'Nanana nicht so voreilig! 😄 Es läuft doch kein Spiel. ⛔ Mit "!start word" könnt ihr dieses starten.');
+    client.say(channel, 'Nanana nicht so voreilig! 😄 Es läuft doch kein Spiel. ❌ Mit "!start word" könnt ihr dieses starten.');
     return;
   }
 
@@ -170,7 +171,7 @@ function guessLetter(channel, tags, message) {
       client.say(channel, 'YES! Ihr habt das Wort "' + randomWord + '" erfolgereich erraten. ✅ Sehr nice! 😎');
       gameRunning = false;
     } else {
-      client.say(channel, "Schade! :( Das geratene Wort ist nicht korrekt. Versucht es nochmal!");
+      client.say(channel, "Schade! :\ Das geratene Wort ist nicht korrekt. ❌ Versucht es nochmal!");
     }
   } else {
     if (guessedLetters.has(guess)) {
@@ -185,14 +186,14 @@ function guessLetter(channel, tags, message) {
           gameRunning = false;
         }
       } else {
-        client.say(channel, 'Schade! :( Der Buchstabe "' + guess + '" ist nicht im Wort enthalten. ❌ Versucht es nochmal!');
+        client.say(channel, 'Schade! :\ Der Buchstabe "' + guess + '" ist nicht im Wort enthalten. ❌ Versucht es nochmal!');
       }
     }
   }
 }
 
 function wordCommand(channel, tags) {
-  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, essen, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten | ${tags.username} |`;
+  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. 🔤 --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, essen, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten  | ${tags.username} |`;
   client.say(channel, message);
 }
 
@@ -209,7 +210,7 @@ function showCurrentCategory(channel, tags) {
 //change Category function
 function changeCategory(channel, tags, message) {
   if (gameRunning) {
-    client.say(channel, `Da will wohl jemand das Spiel sabotieren?! Kappa Die Kategorie kannst du nicht während eines laufenden Spiels ändern. | ${tags.username} |`);
+    client.say(channel, `Da will wohl jemand das Spiel sabotieren?! Kappa Die Kategorie kannst du nicht während eines laufenden Spiels ändern. ❌ | ${tags.username} |`);
     return;
   }
 
@@ -259,7 +260,7 @@ function getWordList() {
 function provideTip(channel, tags, client) {
 
   if (!gameRunning) {
-    client.say(channel, `Nanana nicht so voreilig! 😄 Es läuft doch kein Spiel. ⛔ Mit "!start word" kannst du dieses starten. || ${tags.username} ||`);
+    client.say(channel, `Nanana nicht so voreilig! 😄 Es läuft doch kein Spiel. ❌ Mit "!start word" kannst du dieses starten. || ${tags.username} ||`);
     return;
   }
 
@@ -271,10 +272,8 @@ function provideTip(channel, tags, client) {
     );
     const randomUnrevealedLetter =
       unrevealedLetters[Math.floor(Math.random() * unrevealedLetters.length)];
-    client.say(channel, `Tipp: Ein Buchstabe im Wort ist "${randomUnrevealedLetter}" (!guess <buchstabe> zum eintragen) || ${tags.username} ||`);
+    client.say(channel, `Tipp: Ein Buchstabe im Wort ist "${randomUnrevealedLetter}" (!guess <buchstabe> zum eintragen) Ihr habt noch ${tipCount} Tipps übrig. ⚠️ || ${tags.username} ||`);
     tipCount--;
-
-    client.say(channel, `Verbleibende Tipps: ${tipCount} ⚠️`);
   } else {
     client.say(channel, `Ihr habt alle Tipps verballert! Super gemacht.... Kappa`);
   }
