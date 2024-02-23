@@ -138,6 +138,7 @@ function saveCooldownDuration(cooldownDuration) {
 
 // Funktion zum Laden der Cooldown-Dauer aus einer Datei beim Start des Bots
 function loadCooldownDuration() {
+  try {
   fs.readFile("./data/cooldown_config.json", (err, data) => {
     if (err) {
       console.error("Fehler beim Lesen der Cooldown-Konfiguration:", err);
@@ -148,6 +149,9 @@ function loadCooldownDuration() {
       startWordCooldownDuration = parsedData.startWordCooldownDuration;
     }
   });
+} catch (error) {
+  console.error("Fehler beim Laden der Cooldown-Dauer:", error);
+}
 }
 
 // Beim Start des Bots die Cooldown-Dauer laden
@@ -303,6 +307,7 @@ function saveGameDuration(duration) {
 }
 
 function loadGameDuration() {
+  try {
   fs.readFile("./data/game_duration_config.json", (err, data) => {
       if (err) {
           console.error("Fehler beim Lesen der Spieldauer-Konfiguration:", err);
@@ -313,6 +318,9 @@ function loadGameDuration() {
           gameDuration = parsedData.gameDuration;
       }
   });
+} catch (error) {
+  console.error("Fehler beim Laden der Spieldauer:", error);
+}
 }
 client.connect().catch(console.error);
 loadCooldownDuration();
