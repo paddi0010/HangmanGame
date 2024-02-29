@@ -1,6 +1,7 @@
 const tmi = require("tmi.js");
 const config = require("./secret_data/config.json");
 const fs = require("fs");
+const channel = config.channels[0];
 const categories = require ("./data/words.json");
 
 const client = new tmi.Client({
@@ -17,6 +18,8 @@ const client = new tmi.Client({
 
 //word list is in the /data/words.json file
 
+
+//Variables
 let selectedCategory = "standard"; // EN --> Default: standard, you can change this to technik, obst, tiere or stadt / DE --> Standard: standard, du kannst diese zu technik, obst tiere oder stadt ändern//
 let randomWord;
 let guessedLetters;
@@ -27,7 +30,6 @@ let gameDuration = 240000; // EN --> Default: 4 Minutes (in Milliseconds) / DE -
 let startWordCooldown = null;
 let startWordCooldownDuration = 60000; // EN --> Default 1 Minute (in Milliseconds) / DE: --> Standard: 1 Minute Cooldown (in Milliseckunden)
 
-const channel = config.channels[0];
 
 client.on("connected", (address, port) => {
   console.log("Connected", "Adresse: " + address + " Port: " + port);
@@ -193,7 +195,7 @@ function guessLetter(channel, tags, message) {
 }
 
 function wordCommand(channel, tags) {
-  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. 🔤 --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, essen, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten  | ${tags.username} |`;
+  const message = `---> Verfügbare Befehle: --- !start word - Startet ein neues Spiel. ✅ --- !stop word - Beendet das aktuelle Spiel. ❌ --- !guess [Buchstabe] - Rate einen Buchstaben. 🔤 --- !kat - Zeigt dir die aktuelle Kategorie an. --- !kategorie (standard, technik, essen, tiere, stadt) - Kategorie ändern, !tipp - einen Tipp erhalten 💡  | ${tags.username} |`;
   client.say(channel, message);
 }
 
@@ -258,7 +260,6 @@ function getWordList() {
 }
 
 function provideTip(channel, tags, client) {
-
   if (!gameRunning) {
     client.say(channel, `Nanana nicht so voreilig! 😄 Es läuft doch kein Spiel. ❌ Mit "!start word" kannst du dieses starten. || ${tags.username} ||`);
     return;
@@ -293,7 +294,7 @@ function setGameDuration(channel, tags, message) {
 
 function showGameDuration(channel) {
   const durationSeconds = gameDuration / 1000;
-  client.say(channel, `Die aktuelle Spieldauer beträgt ${durationSeconds} Sekunden.`);
+  client.say(channel, `Die aktuelle Spieldauer beträgt ${durationSeconds} Sekunden. ⏱️`);
 }
 
 function saveGameDuration(duration) {
@@ -307,20 +308,21 @@ function saveGameDuration(duration) {
 
 function loadGameDuration() {
   try {
-  fs.readFile("./data/game_duration_config.json", (err, data) => {
+    fs.readFile("./data/game_duration_config.json", (err, data) => {
       if (err) {
-          console.error("Fehler beim Lesen der Spieldauer-Konfiguration:", err);
-          return;
+        console.error("Fehler beim Lesen der Spieldauer-Konfiguration:", err);
+        return;
       }
       const parsedData = JSON.parse(data);
       if (!isNaN(parsedData.gameDuration)) {
-          gameDuration = parsedData.gameDuration;
+        gameDuration = parsedData.gameDuration;
       }
-  });
-} catch (error) {
-  console.error("Fehler beim Laden der Spieldauer:", error);
+    });
+  } catch (error) {
+    console.error("Fehler beim Laden der Spieldauer:", error);
+  }
 }
-}
+
 client.connect().catch(console.error);
 loadCooldownDuration();
 loadGameDuration();
