@@ -45,6 +45,8 @@ Now the Twitch Game should be started!
 | `!tipp` | Become a Hint |
 | `!cooldown <seconds>` | Configure the Cooldown (only for the Broadcaster and the Moderators) |
 | `!cooldown` | Show the current Colldown Time |
+| `!spielzeit <seconds>` | Change the Game Time |
+| `!spielzeit` | Show the current Game Time |
 
 # How to edit Bot Messages
 
