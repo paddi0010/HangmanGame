@@ -31,6 +31,21 @@ Now the Twitch Game should be started!
 **For stop the Bot, you can easy close the Command Window ;)**
 
 
+# Commands
+
+| Command | Description |
+| --- | --- |
+| `!start word` | Start the Game |
+| `!stop word` | Stopp the Game |
+| `!guess <word>` | Guess the Word |
+| `!kategorien` | List of all Categories |
+| `!kat` | Show current Kategorie |
+| `!kategorie <categorie>` | Select the Categorie (standart, technik, essen, tiere, stadt) |
+| `!word` | Show all Commands |
+| `!tipp` | Become a Hint |
+| `!cooldown <seconds>` | Configure the Cooldown (only for the Broadcaster and the Moderators) |
+| `!cooldown` | Show the current Colldown Time |
+
 # How to edit Bot Messages
 
 You can open the `game.js` File and you can see a lot of Code. If you want to change the Message, you can change it, i do comments in EN und DE. Do NOT change the Commands otherwise the Bot Commands are buggy.
