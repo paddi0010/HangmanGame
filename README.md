@@ -36,7 +36,7 @@ Now the Twitch Game should be started!
 | Command | Description |
 | --- | --- |
 | `!start word` | Start the Game |
-| `!stop word` | Stopp the Game |
+| `!stop word` | Stop the Game |
 | `!guess <word>` | Guess the Word |
 | `!kategorien` | List of all Categories |
 | `!kat` | Show current Kategorie |
